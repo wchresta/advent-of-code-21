@@ -1,6 +1,7 @@
 use input::AoCInput;
 
 pub mod input;
+pub mod pos;
 
 pub fn input_string(day: &str) -> String {
     let path = format!("inputs/{}", day);
