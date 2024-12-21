@@ -16,6 +16,9 @@
         # cmake
         # gfortran
         # blas
+
+        # for new_day
+        xmlstarlet
       ];
 
       # Certain Rust tools won't work without this
