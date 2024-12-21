@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+day=$1
+if [[ -z $day ]]; then
+    echo >&2 "Usage: $0 <day>"
+    exit 1
+fi
+
+inputFile="inputs/day${day}"
+if [[ ! -e $inputFile ]]; then
+    echo "Downloading input file"
+    sessionToken=$(cat ~/.config/aoc/session_token)
+    wget --no-cookies --header "Cookie: session=${sessionToken}" -O "$inputFile" https://adventofcode.com/2021/day/${day}/input
+fi
+
+binFile="src/bin/day${day}.rs"
+if [[ ! -e $binFile ]]; then
+    cat day.rs.tmpl | sed "s/%DAY%/$day/" > "$binFile" 
+fi
