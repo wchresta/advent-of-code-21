@@ -2,6 +2,8 @@
 use std::fmt::Debug;
 use std::str::FromStr;
 
+use itertools::Itertools;
+
 pub trait AoCInput {
     fn from_input(s: &str) -> Self;
 }
@@ -52,5 +54,11 @@ where
     fn from_line(s: &str) -> Self {
         let (a, b) = s.split_once(',').or(s.split_once(' ')).unwrap();
         (a.parse().unwrap(), b.parse().unwrap())
+    }
+}
+
+impl AoCLineInput for Vec<u32> {
+    fn from_line(s: &str) -> Self {
+        s.chars().map(|c| c.to_digit(10).unwrap()).collect_vec()
     }
 }
