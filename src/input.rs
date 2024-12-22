@@ -62,3 +62,12 @@ impl AoCLineInput for Vec<u32> {
         s.chars().map(|c| c.to_digit(10).unwrap()).collect_vec()
     }
 }
+
+// Specialized parsers
+pub fn split_line_on<T>(s: &str, sep: char) -> Vec<T>
+where
+    T: FromStr,
+    T::Err: Debug,
+{
+    s.split(sep).map(|n| n.parse().unwrap()).collect_vec()
+}

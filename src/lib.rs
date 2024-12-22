@@ -1,6 +1,7 @@
 use input::AoCInput;
 
 pub mod input;
+pub mod matrix;
 pub mod pos;
 
 pub fn input_string(day: &str) -> String {
