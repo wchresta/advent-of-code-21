@@ -1,5 +1,6 @@
 use aoc21::input::CSVLine;
 use memoize::memoize;
+use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 
 fn main() {
     aoc21::simple("day6", part1, part2);
@@ -9,7 +10,7 @@ type Input = CSVLine<u8>;
 type Output = u64;
 
 fn part1(inp: &Input) -> Output {
-    inp.iter().map(|f| fish(*f, 80)).sum()
+    inp.par_iter().map(|f| fish(*f, 80)).sum()
 }
 
 #[memoize]
@@ -24,7 +25,7 @@ fn fish(state: u8, time: u16) -> Output {
 }
 
 fn part2(inp: &Input) -> Output {
-    inp.iter().map(|f| fish(*f, 256)).sum()
+    inp.par_iter().map(|f| fish(*f, 256)).sum()
 }
 
 #[allow(dead_code)]
