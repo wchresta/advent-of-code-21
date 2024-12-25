@@ -1,5 +1,6 @@
 // Common input data types
 use std::fmt::Debug;
+use std::ops::{Deref, DerefMut};
 use std::str::FromStr;
 
 use itertools::Itertools;
@@ -60,6 +61,39 @@ where
 impl AoCLineInput for Vec<u32> {
     fn from_line(s: &str) -> Self {
         s.chars().map(|c| c.to_digit(10).unwrap()).collect_vec()
+    }
+}
+
+#[repr(transparent)]
+#[derive(Debug)]
+pub struct CSVLine<T>(pub Vec<T>);
+
+impl<T> CSVLine<T> {
+    pub fn new() -> Self {
+        Self(Vec::new())
+    }
+}
+
+impl<T> Deref for CSVLine<T> {
+    type Target = Vec<T>;
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
+impl<T> DerefMut for CSVLine<T> {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.0
+    }
+}
+
+impl<T> AoCInput for CSVLine<T>
+where
+    T: FromStr,
+    T::Err: Debug,
+{
+    fn from_input(s: &str) -> Self {
+        Self(split_line_on(s, ','))
     }
 }
 
