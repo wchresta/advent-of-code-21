@@ -19,34 +19,51 @@ impl MatEl for isize {}
 #[derive(Debug, Clone)]
 pub struct Mat<T> {
     pub mat: Vec<Vec<T>>,
-    pub n: usize,
     pub m: usize,
+    pub n: usize,
 }
 
 impl<T> Mat<T> {
-    pub fn iter(&self) -> impl Iterator<Item = (Ix, &T)> {
-        (0..self.m).into_iter().flat_map(move |i| {
-            (0..self.n)
-                .into_iter()
-                .map(move |j| ((i, j), &self.mat[i][j]))
-        })
+    pub fn get(&self, ix: Ix) -> &T {
+        &self.mat[ix.0][ix.1]
     }
 
-    pub fn iter_bordering(&self, (x, y): Ix) -> impl Iterator<Item = (Ix, &T)> {
+    pub fn get_mut(&mut self, ix: Ix) -> &mut T {
+        &mut self.mat[ix.0][ix.1]
+    }
+
+    pub fn iter_idx(&self) -> impl Iterator<Item = Ix> {
+        let (m, n) = (self.m, self.n);
+        (0..m).flat_map(move |i| (0..n).map(move |j| (i, j)))
+    }
+
+    pub fn iter(&self) -> impl Iterator<Item = (Ix, &T)> {
+        self.iter_idx().map(|pos| (pos, self.get(pos)))
+    }
+
+    pub fn iter_bordering_idx(&self, (i, j): Ix) -> impl Iterator<Item = Ix> {
         let mut pos = Vec::new();
-        if x > 0 {
-            pos.push((x - 1, y))
+        if i > 0 {
+            pos.push((i - 1, j))
         }
-        if y > 0 {
-            pos.push((x, y - 1))
+        if j > 0 {
+            pos.push((i, j - 1))
         }
-        if x - 1 < self.n {
-            pos.push((x + 1, y))
+        if i + 1 < self.m {
+            pos.push((i + 1, j))
         }
-        if y - 1 < self.m {
-            pos.push((x, y + 1))
+        if j + 1 < self.n {
+            pos.push((i, j + 1))
         }
-        pos.into_iter().map(|p| (p, &self.mat[p.0][p.1]))
+        pos.into_iter()
+    }
+
+    pub fn iter_bordering(&self, pos: Ix) -> impl Iterator<Item = (Ix, &T)> {
+        self.iter_bordering_idx(pos).map(|ix| (ix, self.get(ix)))
+    }
+
+    pub fn iter_bordering_el(&self, pos: Ix) -> impl Iterator<Item = &T> {
+        self.iter_bordering_idx(pos).map(|pos| self.get(pos))
     }
 }
 
