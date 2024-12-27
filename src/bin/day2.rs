@@ -1,4 +1,3 @@
-use aoc21::input::{AoCInput, AoCLineInput};
 use aoc21::pos::Pos;
 
 fn main() {
