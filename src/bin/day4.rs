@@ -22,7 +22,7 @@ fn part1(inp @ (_, boards): &Input) -> Output {
     let (winners, marked) = run_winners(inp, true);
     let (win_draw, win_k) = winners[0];
     let mut sum = 0;
-    for (ij, v) in boards[win_k].iter_idx() {
+    for (ij, v) in boards[win_k].iter() {
         if !marked.contains(&(win_k, ij)) {
             sum += v;
         }
@@ -38,7 +38,7 @@ fn run_winners(
     let mut num_to_pos = HashMap::new();
     let mut marked = HashSet::new();
     for (k, b) in boards.iter().enumerate() {
-        b.iter_idx().for_each(|(ij, n)| {
+        b.iter().for_each(|(ij, n)| {
             num_to_pos.insert((k, n), ij);
         })
     }
@@ -71,7 +71,7 @@ fn part2(inp @ (_, boards): &Input) -> Output {
     let (winners, marked) = run_winners(inp, false);
     let (win_draw, win_k) = winners[winners.len() - 1];
     let mut sum = 0;
-    for (ij, v) in boards[win_k].iter_idx() {
+    for (ij, v) in boards[win_k].iter() {
         if !marked.contains(&(win_k, ij)) {
             sum += v;
         }

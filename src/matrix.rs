@@ -24,12 +24,29 @@ pub struct Mat<T> {
 }
 
 impl<T> Mat<T> {
-    pub fn iter_idx(&self) -> impl Iterator<Item = (Ix, &T)> {
+    pub fn iter(&self) -> impl Iterator<Item = (Ix, &T)> {
         (0..self.m).into_iter().flat_map(move |i| {
             (0..self.n)
                 .into_iter()
                 .map(move |j| ((i, j), &self.mat[i][j]))
         })
+    }
+
+    pub fn iter_bordering(&self, (x, y): Ix) -> impl Iterator<Item = (Ix, &T)> {
+        let mut pos = Vec::new();
+        if x > 0 {
+            pos.push((x - 1, y))
+        }
+        if y > 0 {
+            pos.push((x, y - 1))
+        }
+        if x - 1 < self.n {
+            pos.push((x + 1, y))
+        }
+        if y - 1 < self.m {
+            pos.push((x, y + 1))
+        }
+        pos.into_iter().map(|p| (p, &self.mat[p.0][p.1]))
     }
 }
 
@@ -42,9 +59,16 @@ where
         let mat = s
             .lines()
             .map(|line| {
-                line.split_whitespace()
-                    .map(|num| num.parse().unwrap())
-                    .collect_vec()
+                if line.contains(" ") {
+                    line.split_whitespace()
+                        .map(|num| num.parse().unwrap())
+                        .collect_vec()
+                } else {
+                    // Assume one character for every element.
+                    line.chars()
+                        .map(|num| num.to_string().parse().unwrap())
+                        .collect_vec()
+                }
             })
             .collect_vec();
         let (m, n) = (mat.len(), mat[0].len());
