@@ -65,6 +65,44 @@ impl<T> Mat<T> {
     pub fn iter_bordering_el(&self, pos: Ix) -> impl Iterator<Item = &T> {
         self.iter_bordering_idx(pos).map(|pos| self.get(pos))
     }
+
+    pub fn iter_diag_bordering_idx(&self, (i, j): Ix) -> impl Iterator<Item = Ix> {
+        let mut pos = Vec::new();
+        if i > 0 {
+            pos.push((i - 1, j));
+            if j > 0 {
+                pos.push((i - 1, j - 1));
+            }
+            if j + 1 < self.n {
+                pos.push((i - 1, j + 1));
+            }
+        }
+        if j > 0 {
+            pos.push((i, j - 1));
+        }
+        if i + 1 < self.m {
+            pos.push((i + 1, j));
+            if j > 0 {
+                pos.push((i + 1, j - 1));
+            }
+            if j + 1 < self.n {
+                pos.push((i + 1, j + 1));
+            }
+        }
+        if j + 1 < self.n {
+            pos.push((i, j + 1));
+        }
+        pos.into_iter()
+    }
+
+    pub fn iter_diag_bordering(&self, pos: Ix) -> impl Iterator<Item = (Ix, &T)> {
+        self.iter_diag_bordering_idx(pos)
+            .map(|ix| (ix, self.get(ix)))
+    }
+
+    pub fn iter_diag_bordering_el(&self, pos: Ix) -> impl Iterator<Item = &T> {
+        self.iter_diag_bordering_idx(pos).map(|pos| self.get(pos))
+    }
 }
 
 impl<T> AoCInput for Mat<T>
