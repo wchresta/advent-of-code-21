@@ -1,8 +1,6 @@
 use itertools::Itertools;
 
-fn main() {
-    aoc21::simple("day10", part1, part2);
-}
+aoc21::simple_main!(10);
 
 type Input = Vec<String>;
 type Output = isize;
@@ -89,5 +87,5 @@ const TEST_INPUT: &str = "[({(<(())[]>[[{[]{<()<>>
 <{([([[(<>()){}]>(<<{{
 <{([{{}}[<[[[<>{}]]]>[]]";
 
-aoc21::simple_test_part1!(TEST_INPUT, 26397);
-aoc21::simple_test_part2!(TEST_INPUT, 288957);
+aoc21::test_part1!(TEST_INPUT, 26397);
+aoc21::test_part2!(TEST_INPUT, 288957);

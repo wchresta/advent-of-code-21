@@ -1,8 +1,6 @@
 use itertools::Itertools;
 
-fn main() {
-    aoc21::simple("day3", part1, part2);
-}
+aoc21::simple_main!(3);
 
 type Input = Vec<Vec<u32>>;
 type Output = u32;
@@ -74,5 +72,5 @@ const TEST_INPUT: &str = "00100
 00010
 01010";
 
-aoc21::simple_test_part1!(TEST_INPUT, 198);
-aoc21::simple_test_part2!(TEST_INPUT, 230);
+aoc21::test_part1!(TEST_INPUT, 198);
+aoc21::test_part2!(TEST_INPUT, 230);

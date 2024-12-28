@@ -1,8 +1,6 @@
 use aoc21::pos::Pos;
 
-fn main() {
-    aoc21::simple("day2", part1, part2);
-}
+aoc21::simple_main!(2);
 
 type Input = Vec<(String, i32)>;
 type Output = i32;
@@ -39,5 +37,5 @@ up 3
 down 8
 forward 2";
 
-aoc21::simple_test_part1!(TEST_INPUT, 150);
-aoc21::simple_test_part2!(TEST_INPUT, 900);
+aoc21::test_part1!(TEST_INPUT, 150);
+aoc21::test_part2!(TEST_INPUT, 900);

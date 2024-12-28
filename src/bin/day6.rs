@@ -2,9 +2,7 @@ use aoc21::input::CSVLine;
 use memoize::memoize;
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 
-fn main() {
-    aoc21::simple("day6", part1, part2);
-}
+aoc21::simple_main!(6);
 
 type Input = CSVLine<u8>;
 type Output = u64;
@@ -31,5 +29,5 @@ fn part2(inp: &Input) -> Output {
 #[allow(dead_code)]
 const TEST_INPUT: &str = "3,4,3,1,2";
 
-aoc21::simple_test_part1!(TEST_INPUT, 5934);
-aoc21::simple_test_part2!(TEST_INPUT, 26984457539);
+aoc21::test_part1!(TEST_INPUT, 5934);
+aoc21::test_part2!(TEST_INPUT, 26984457539);

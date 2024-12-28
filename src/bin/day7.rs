@@ -1,9 +1,7 @@
 use aoc21::input::CSVLine;
 use itertools::Itertools;
 
-fn main() {
-    aoc21::simple("day7", part1, part2);
-}
+aoc21::simple_main!(7);
 
 type N = u32;
 type Input = CSVLine<N>;
@@ -34,5 +32,5 @@ fn part2(inp: &Input) -> Output {
 #[allow(dead_code)]
 const TEST_INPUT: &str = "16,1,2,0,4,2,7,1,2,14";
 
-aoc21::simple_test_part1!(TEST_INPUT, 37);
-aoc21::simple_test_part2!(TEST_INPUT, 168);
+aoc21::test_part1!(TEST_INPUT, 37);
+aoc21::test_part2!(TEST_INPUT, 168);

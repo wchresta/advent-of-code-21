@@ -25,12 +25,10 @@ if [[ ! -e $binFile ]]; then
     testInput=${testInput//&lt;/<}
 
     cat >"$binFile" <<EOF
-fn main() {
-    aoc21::simple("day${day}", part1, part2);
-}
+aoc21::simple_main!(${day});
 
 type Input = Vec<String>;
-type Output = isize;
+type Output = usize;
 
 fn part1(inp: &Input) -> Output {
     0
@@ -43,7 +41,7 @@ fn part2(_inp: &Input) -> Output {
 #[allow(dead_code)]
 const TEST_INPUT: &str = "${testInput}";
 
-aoc21::simple_test_part1!(TEST_INPUT, 0);
-aoc21::simple_test_part2!(TEST_INPUT, 0);
+aoc21::test_part1!(TEST_INPUT, 0);
+aoc21::test_part2!(TEST_INPUT, 0);
 EOF
 fi

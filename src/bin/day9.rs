@@ -3,9 +3,7 @@ use std::collections::HashSet;
 use aoc21::matrix::{Ix, Mat};
 use itertools::Itertools;
 
-fn main() {
-    aoc21::simple("day9", part1, part2);
-}
+aoc21::simple_main!(9);
 
 type Input = Mat<u8>;
 type Output = u32;
@@ -51,5 +49,5 @@ const TEST_INPUT: &str = "2199943210
 8767896789
 9899965678";
 
-aoc21::simple_test_part1!(TEST_INPUT, 15);
-aoc21::simple_test_part2!(TEST_INPUT, 1134);
+aoc21::test_part1!(TEST_INPUT, 15);
+aoc21::test_part2!(TEST_INPUT, 1134);

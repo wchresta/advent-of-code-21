@@ -1,6 +1,4 @@
-fn main() {
-    aoc21::simple("day1", part1, part2);
-}
+aoc21::simple_main!(1);
 
 type Input = Vec<usize>;
 type Output = usize;
@@ -34,5 +32,5 @@ const TEST_INPUT: &str = "199
 260
 263";
 
-aoc21::simple_test_part1!(TEST_INPUT, 7);
-aoc21::simple_test_part2!(TEST_INPUT, 5);
+aoc21::test_part1!(TEST_INPUT, 7);
+aoc21::test_part2!(TEST_INPUT, 5);

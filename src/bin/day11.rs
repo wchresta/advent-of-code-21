@@ -2,9 +2,7 @@ use std::collections::HashSet;
 
 use aoc21::matrix::{Ix, Mat};
 
-fn main() {
-    aoc21::simple("day11", part1, part2);
-}
+aoc21::simple_main!(11);
 
 type Input = Mat<u8>;
 type Output = usize;
@@ -69,5 +67,5 @@ const TEST_INPUT: &str = "5483143223
 4846848554
 5283751526";
 
-aoc21::simple_test_part1!(TEST_INPUT, 1656);
-aoc21::simple_test_part2!(TEST_INPUT, 195);
+aoc21::test_part1!(TEST_INPUT, 1656);
+aoc21::test_part2!(TEST_INPUT, 195);
