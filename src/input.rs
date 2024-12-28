@@ -105,3 +105,12 @@ where
 {
     s.split(sep).map(|n| n.parse().unwrap()).collect_vec()
 }
+
+pub fn sections_tuple<'s, T, B>(
+    s: &'s str,
+    top: impl Fn(&'s str) -> T,
+    bot: impl Fn(&'s str) -> B,
+) -> (T, B) {
+    let (t, b) = s.split_once("\n\n").unwrap();
+    (top(t), bot(b))
+}

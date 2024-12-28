@@ -1,3 +1,4 @@
+pub mod counter;
 pub mod input;
 pub mod matrix;
 pub mod pos;
