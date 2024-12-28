@@ -15,6 +15,15 @@ macro_rules! simple_main {
     };
 }
 
+#[macro_export]
+macro_rules! main {
+    ( $day:expr ) => {
+        fn main() {
+            aoc21::solve(&format!("day{}", $day), parse, part1, part2);
+        }
+    };
+}
+
 pub fn input_string(day: &str) -> String {
     let path = format!("inputs/{}", day);
     std::fs::read_to_string(&path).expect(&format!("input file {} not found", &path))
