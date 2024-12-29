@@ -2,7 +2,7 @@ use std::collections::{HashMap, HashSet};
 
 use aoc21::{
     input::{self, AoCInput},
-    matrix::{Ix, Mat},
+    matrix::{Ix, Mat, MatGet},
 };
 
 fn main() {
@@ -48,7 +48,7 @@ fn run_winners(
     'drawLoop: for d in draw {
         for k in playing.clone().into_iter() {
             let b = &boards[k];
-            if let Some((i, j)) = num_to_pos.get(&(k, d)) {
+            if let Some((i, j)) = num_to_pos.get(&(k, *d)) {
                 marked.insert((k, (*i, *j)));
 
                 // Check rows and columns for bingo

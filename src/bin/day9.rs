@@ -1,6 +1,6 @@
 use std::collections::HashSet;
 
-use aoc21::matrix::{Ix, Mat};
+use aoc21::matrix::{Ix, Mat, MatGet};
 use itertools::Itertools;
 
 aoc21::simple_main!(9);
@@ -9,10 +9,10 @@ type Input = Mat<u8>;
 type Output = u32;
 
 fn part1(inp: &Input) -> Output {
-    low_points(inp).map(|(_, h)| *h as u32 + 1).sum()
+    low_points(inp).map(|(_, h)| h as u32 + 1).sum()
 }
 
-fn low_points(mat: &Input) -> impl Iterator<Item = (Ix, &u8)> {
+fn low_points<'a>(mat: &'a Input) -> impl Iterator<Item = (Ix, u8)> + 'a {
     mat.iter()
         .filter(|(pos, val)| *val < mat.iter_bordering_el(*pos).min().unwrap())
 }
@@ -27,7 +27,7 @@ fn part2(inp: &Input) -> Output {
                 size += 1;
 
                 for (np, nh) in inp.iter_bordering(pos) {
-                    if *nh == 9 || nh <= height || seen.contains(&np) {
+                    if nh == 9 || nh <= height || seen.contains(&np) {
                         continue;
                     }
                     seen.insert(np);

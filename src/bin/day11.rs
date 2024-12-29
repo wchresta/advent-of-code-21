@@ -1,6 +1,6 @@
 use std::collections::HashSet;
 
-use aoc21::matrix::{Ix, Mat};
+use aoc21::matrix::{Ix, Mat, MatGet, MatMut};
 
 aoc21::simple_main!(11);
 
@@ -35,7 +35,9 @@ fn power_up(mat: &mut Input) -> usize {
         }
     };
 
-    mat.iter_idx().for_each(|p| inc(mat, &mut flash_stack, p));
+    mat.clone()
+        .iter_idx()
+        .for_each(|p| inc(mat, &mut flash_stack, p));
 
     let mut flashed = HashSet::new();
     while let Some(pos) = flash_stack.pop() {
@@ -43,7 +45,7 @@ fn power_up(mat: &mut Input) -> usize {
             continue;
         }
         flashed.insert(pos);
-        mat.iter_diag_bordering_idx(pos).for_each(|p| {
+        mat.clone().iter_diag_bordering_idx(pos).for_each(|p| {
             inc(mat, &mut flash_stack, p);
         })
     }
