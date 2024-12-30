@@ -18,6 +18,12 @@ where
     }
 }
 
+impl AoCInput for String {
+    fn from_input(s: &str) -> Self {
+        s.to_string()
+    }
+}
+
 pub trait AoCLineInput {
     fn from_line(s: &str) -> Self;
 }
@@ -58,9 +64,17 @@ where
     }
 }
 
+impl AoCLineInput for Vec<u8> {
+    fn from_line(s: &str) -> Self {
+        s.chars()
+            .map(|c| c.to_digit(16).unwrap() as u8)
+            .collect_vec()
+    }
+}
+
 impl AoCLineInput for Vec<u32> {
     fn from_line(s: &str) -> Self {
-        s.chars().map(|c| c.to_digit(10).unwrap()).collect_vec()
+        s.chars().map(|c| c.to_digit(16).unwrap()).collect_vec()
     }
 }
 
