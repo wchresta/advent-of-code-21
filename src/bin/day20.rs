@@ -1,7 +1,7 @@
 use iter::{ParallelBridge, ParallelExtend, ParallelIterator};
 use itertools::Itertools;
 use rayon::*;
-use std::collections::HashMap;
+use std::collections::HashSet;
 
 aoc21::main!(20);
 
@@ -10,11 +10,11 @@ type Output = usize;
 
 fn parse(inp: &str) -> Input {
     let (top, bot) = inp.split_once("\n\n").unwrap();
-    let mut img = Sparse::new('.');
+    let mut img = Sparse::new(false);
     for (i, line) in bot.lines().enumerate() {
         for (j, char) in line.char_indices() {
             match char {
-                '#' => img.set((i as isize, j as isize), '#'),
+                '#' => img.set((i as isize, j as isize), true),
                 '.' => {}
                 _ => panic!("Unexpected char"),
             }
@@ -52,7 +52,11 @@ fn image_improve(alg: &Vec<char>, img: &Sparse) -> Sparse {
     }
 
     Sparse::from_par_iter(
-        if img.empty == '.' { alg[0] } else { alg[0x1ff] },
+        if img.empty {
+            alg[0x1ff] == '#'
+        } else {
+            alg[0] == '#'
+        },
         (min.0 - 1..max.0 + 2)
             .cartesian_product(min.1 - 1..max.1 + 2)
             .par_bridge()
@@ -60,11 +64,11 @@ fn image_improve(alg: &Vec<char>, img: &Sparse) -> Sparse {
                 let mut kernel = 0usize;
                 for (ki, kj) in (i - 1..i + 2).cartesian_product(j - 1..j + 2) {
                     kernel <<= 1;
-                    if img.get((ki, kj)) != '.' {
+                    if img.get((ki, kj)) {
                         kernel |= 1;
                     }
                 }
-                ((i, j), alg[kernel])
+                ((i, j), alg[kernel] == '#')
             }),
     )
 }
@@ -72,33 +76,33 @@ fn image_improve(alg: &Vec<char>, img: &Sparse) -> Sparse {
 type Ix = (isize, isize);
 #[derive(Debug, Clone, PartialEq, Eq)]
 struct Sparse {
-    els: HashMap<Ix, char>,
-    empty: char,
+    els: HashSet<Ix>,
+    empty: bool,
 }
 
 impl Sparse {
-    fn new(empty: char) -> Self {
+    fn new(empty: bool) -> Self {
         Self {
-            els: HashMap::new(),
+            els: HashSet::new(),
             empty,
         }
     }
 
-    fn from_par_iter(empty: char, iter: impl ParallelIterator<Item = (Ix, char)>) -> Self {
-        let mut els = HashMap::new();
-        els.par_extend(iter.filter(|(_, char)| *char != empty));
+    fn from_par_iter(empty: bool, iter: impl ParallelIterator<Item = (Ix, bool)>) -> Self {
+        let mut els = HashSet::new();
+        els.par_extend(iter.filter_map(|(ix, c)| if c != empty { Some(ix) } else { None }));
         Self { els, empty }
     }
 
-    fn get(&self, ix: Ix) -> char {
-        *self.els.get(&ix).unwrap_or(&self.empty)
+    fn get(&self, ix: Ix) -> bool {
+        self.els.contains(&ix) ^ self.empty
     }
 
-    fn set(&mut self, ix: Ix, el: char) {
+    fn set(&mut self, ix: Ix, el: bool) {
         if el == self.empty {
             self.els.remove(&ix);
         } else {
-            self.els.insert(ix, el);
+            self.els.insert(ix);
         }
     }
 
@@ -108,7 +112,7 @@ impl Sparse {
         for i in li..hi + 1 {
             let mut line = String::new();
             for j in lj..hj + 1 {
-                line += &self.get((i, j)).to_string();
+                line += if self.get((i, j)) { "#" } else { "." };
             }
             lines.push(line);
         }
@@ -116,7 +120,7 @@ impl Sparse {
     }
 
     fn iter_idx(&self) -> impl Iterator<Item = &Ix> {
-        self.els.keys()
+        self.els.iter()
     }
 }
 
