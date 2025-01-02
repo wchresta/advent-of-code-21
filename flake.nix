@@ -6,6 +6,7 @@
     devShells.default = pkgs.mkShell {
       buildInputs = with pkgs; [
         cargo
+        cargo-flamegraph
         rustc
         rustfmt
         rust-analyzer
