@@ -38,10 +38,10 @@ fn part2(_inp: &Input) -> Output {
     0
 }
 
-#[allow(dead_code)]
-const TEST_INPUT: &str = "${testInput}";
-
 aoc21::test_part1!(TEST_INPUT, 0);
 aoc21::test_part2!(TEST_INPUT, 0);
+
+#[allow(dead_code)]
+const TEST_INPUT: &str = "${testInput}";
 EOF
 fi

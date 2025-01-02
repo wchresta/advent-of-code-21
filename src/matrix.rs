@@ -5,6 +5,7 @@ use crate::input::AoCInput;
 pub type Ix = (usize, usize);
 
 trait MatEl {}
+impl MatEl for char {}
 impl MatEl for u8 {}
 impl MatEl for u16 {}
 impl MatEl for u32 {}
